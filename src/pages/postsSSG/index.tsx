@@ -5,20 +5,20 @@ import { IMeta } from "@/components/layout/Meta";
 import PostsView from "@/components/posts/PostsView";
 import { PostsType } from "@/components/types/post";
 import Loader from "@/components/ui/Loaders";
-import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
+import type { InferGetStaticPropsType, GetStaticProps } from "next";
 import React from "react";
 
-export const getServerSideProps = (async (context) => {
+export const getStaticProps = (async (context) => {
   const posts = await PostsHandler.getPosts();
   const local = await PostsHandler.getLocalPosts();
   const merged: any = [...local, ...posts];
   console.log({ local });
-  return { props: { intilaPosts: merged } };
-}) satisfies GetServerSideProps<{
+  return { props: { intilaPosts: merged }, revalidate: 60, notFound: false };
+}) satisfies GetStaticProps<{
   intilaPosts: PostsType;
 }>;
 
-const Posts = ({ intilaPosts }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Posts = ({ intilaPosts }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data, isLoading, isError } = useMultiUrlQuery(["/api/posts"], async () => {
     const response = await fetch("/api/posts");
     if (!response.ok) {

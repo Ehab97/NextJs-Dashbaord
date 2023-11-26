@@ -23,16 +23,16 @@ const PostsView: React.FC<IPostsViewProps> = ({ posts }) => {
           {posts.map((post: any) => {
             return (
               <Link
-                key={post.id}
-                href={`${route.asPath}/${post.id}`}
+                key={post.id ?? post._id}
+                href={`${route.asPath}/${post.id ?? post._id}`}
                 className="flex-shrink-0 m-6 max-w-xs shadow-lg me-8"
               >
                 <Post post={post} />
                 {/* <PostCard
                   title={post.title}
                   body={post.body}
-                  imageUrl={`https://randomuser.me/api/portraits/men/${post.id}.jpg`}
-                  id={post.id}
+                  imageUrl={`https://randomuser.me/api/portraits/men/${post.id ?? post._id}.jpg`}
+                  id={post.id ?? post._id}
                 /> */}
               </Link>
             );
